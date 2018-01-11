@@ -22,3 +22,14 @@
     group: root
     mode: 0644
   notify: restart kibana
+
+- name: Install X-pack
+  shell: "/usr/share/kibana/bin/kibana-plugin install x-pack"
+  when: kibana_enable_xpack is defined and kibana_enable_xpack == true
+
+- name: Make sure Kibana home dir has right permissions
+  file:
+    path: /usr/share/kibana
+    state: directory
+    owner: kibana
+    group: kibana

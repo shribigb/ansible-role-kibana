@@ -83,3 +83,7 @@ elasticsearch.password: "{{ kibana_elasticsearch_password }}"
 
 # Set this to true to log all events, including system usage information and all requests.
 # logging.verbose: false
+
+{% if kibana_extra_conf is defined %}
+{{ kibana_extra_conf | to_nice_yaml }}
+{% endif %}
