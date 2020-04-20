@@ -8,3 +8,4 @@ kibana_version: "6.1.0"
 kibana_enable_xpack: false
 kibana_extra_conf: { }
 kibana_plugin_reinstall: false
+kibana_ssl_enabled: false

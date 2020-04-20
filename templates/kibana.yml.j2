@@ -12,7 +12,7 @@ server.host: {{ kibana_server_host }}
 # server.maxPayloadBytes: 1048576
 
 # The Elasticsearch instance to use for all your queries.
-elasticsearch.url: {{ kibana_elasticsearch_url }}
+elasticsearch.hosts: {{ kibana_elasticsearch_url }}
 
 # preserve_elasticsearch_host true will send the hostname specified in `elasticsearch`. If you set it to false,
 # then the host you use to connect to *this* Kibana instance will be sent.
@@ -33,24 +33,19 @@ elasticsearch.url: {{ kibana_elasticsearch_url }}
 elasticsearch.username: "{{ kibana_elasticsearch_username }}"
 elasticsearch.password: "{{ kibana_elasticsearch_password }}"
 {% endif %}
+{% if kibana_ssl_enabled %} 
+server.ssl.enabled: true
+server.ssl.key: "{{ kibana_ssl_key_path }}"
+server.ssl.certificate: "{{ kibana_ssl_cert_path }}"
+{% endif %}
+{% if kibana_elasticsearch_ca_path is defined %}
+{% if kibana_elasticsearch_ca_path is string %}
+elasticsearch.ssl.certificateAuthorities: "{{ kibana_elasticsearch_ca_path}}"
+{% else %}
+elasticsearch.ssl.certificateAuthorities: ["{{ kibana_elasticsearch_ca_path | list | join('\",\"') }}"]
+{% endif %}
+{% endif %}
 
-# SSL for outgoing requests from the Kibana Server to the browser (PEM formatted)
-# server.ssl.cert: /path/to/your/server.crt
-# server.ssl.key: /path/to/your/server.key
-
-# Optional setting to validate that your Elasticsearch backend uses the same key files (PEM formatted)
-# elasticsearch.ssl.cert: /path/to/your/client.crt
-# elasticsearch.ssl.key: /path/to/your/client.key
-
-# If you need to provide a CA certificate for your Elasticsearch instance, put
-# the path of the pem file here.
-# elasticsearch.ssl.ca: /path/to/your/CA.pem
-
-# Set to false to have a complete disregard for the validity of the SSL
-# certificate.
-# elasticsearch.ssl.verify: true
-
-# Time in milliseconds to wait for elasticsearch to respond to pings, defaults to
 # request_timeout setting
 # elasticsearch.pingTimeout: 1500
 
